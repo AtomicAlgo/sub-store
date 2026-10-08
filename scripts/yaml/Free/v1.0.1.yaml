@@ -1,0 +1,343 @@
+mode: rule
+
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: always
+
+proxy-groups:
+
+  - name: 节点选择
+    type: select
+    default-selected: 香港节点
+    proxies:
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - 手动切换
+      - DIRECT
+
+  - name: 香港节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(香港|Hong\\s?Kong|\\bHK\\b|\\bHKG\\b|🇭🇰)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 台湾节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(台湾|台北|新北|Taiwan|Taipei|New\\s?Taipei|\\bTW\\b|\\bTWN\\b|\\bTPE\\b|🇹🇼)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 日本节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(日本|Japan|东京|Tokyo|大阪|Osaka|\\bJP\\b|\\bJPN\\b|\\bNRT\\b|\\bHND\\b|\\bKIX\\b|🇯🇵)"
+    exclude-filter: "(?i)(尼日利亚|剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 狮城节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(新加坡|狮城|Singapore|\\bSG\\b|\\bSGP\\b|\\bSIN\\b|🇸🇬)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 美国节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(美国|United\\s?States|New\\s?York|纽约|Los\\s?Angeles|洛杉矶|San\\s?Jose|圣何塞|San\\s?Francisco|旧金山|Seattle|西雅图|Chicago|芝加哥|Dallas|达拉斯|\\bUS\\b|\\bUSA\\b|\\bLAX\\b|\\bSFO\\b|\\bSJC\\b|\\bSEA\\b|🇺🇸)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 韩国节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(韩国|南韩|首尔|Seoul|Korea|\\bKR\\b|\\bKOR\\b|\\bICN\\b|🇰🇷)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 英国节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(英国|United\\s?Kingdom|Britain|Great\\s?Britain|London|伦敦|\\bUK\\b|\\bGB\\b|\\bGBR\\b|\\bLHR\\b|🇬🇧)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  - name: 澳洲节点
+    type: select
+    include-all-proxies: true
+    filter: "(?i)(澳洲|澳大利亚|Australia|Sydney|悉尼|Melbourne|墨尔本|\\bAU\\b|\\bAUS\\b|\\bSYD\\b|\\bMEL\\b|🇦🇺)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+  # 泰国、德国、法国，以及其他没有独立分类的国家都进入这里
+  - name: 其他节点
+    type: select
+    include-all-proxies: true
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota|香港|Hong\\s?Kong|\\bHK\\b|\\bHKG\\b|🇭🇰|台湾|台北|Taiwan|Taipei|\\bTW\\b|\\bTWN\\b|\\bTPE\\b|🇹🇼|日本|Japan|Tokyo|Osaka|\\bJP\\b|\\bJPN\\b|🇯🇵|新加坡|狮城|Singapore|\\bSG\\b|\\bSGP\\b|🇸🇬|美国|United\\s?States|Los\\s?Angeles|\\bUS\\b|\\bUSA\\b|\\bLAX\\b|🇺🇸|韩国|Korea|Seoul|\\bKR\\b|\\bKOR\\b|🇰🇷|英国|United\\s?Kingdom|London|\\bUK\\b|\\bGBR\\b|🇬🇧|澳洲|澳大利亚|Australia|Sydney|Melbourne|\\bAU\\b|\\bAUS\\b|🇦🇺)"
+    empty-fallback: DIRECT
+
+  # 手动切换不做倍率过滤
+  # FlClash 自动测速脚本也必须跳过这个组
+  - name: 手动切换
+    type: select
+    include-all-proxies: true
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|公告|Traffic|Expire|Expired|Reset|Quota)"
+
+  - name: AI服务
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 美国节点
+      - 日本节点
+      - 台湾节点
+      - 狮城节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - DIRECT
+
+  - name: 流媒体
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - DIRECT
+
+  - name: 游戏平台
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 其他节点
+      - DIRECT
+
+  - name: Google服务
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+  - name: 社交媒体
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+  - name: Microsoft服务
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+  - name: Apple服务
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+  - name: GLOBAL
+    type: select
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - 手动切换
+      - DIRECT
+
+
+rule-providers:
+
+  U_ADBLOCK:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: "./ruleset/U_ADBLOCK.list"
+    url: "https://fastly.jsdelivr.net/gh/fmz200/wool_scripts@main/Loon/rule/rejectAd.list"
+
+  U_GFW:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_GFW.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.mrs"
+
+  U_CN_DOMAIN:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_CN_DOMAIN.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs"
+
+  U_CN_IP:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_CN_IP.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs"
+
+  U_AI:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_AI.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs"
+
+
+rules:
+
+  # LAN
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,localhost,DIRECT
+
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+  # 广告
+  - RULE-SET,U_ADBLOCK,REJECT
+
+  # Google 中国域名特殊代理
+  - DOMAIN-SUFFIX,googleapis.cn,Google服务
+  - DOMAIN-SUFFIX,services.googleapis.cn,Google服务
+  - DOMAIN-SUFFIX,gstatic.cn,Google服务
+  - DOMAIN-KEYWORD,googleusercontent,Google服务
+  - DOMAIN-KEYWORD,xn--ngstr-lra8j,Google服务
+
+  # AI
+  - RULE-SET,U_AI,AI服务
+  - DOMAIN-SUFFIX,openai.com,AI服务
+  - DOMAIN-SUFFIX,chatgpt.com,AI服务
+  - DOMAIN-SUFFIX,oaistatic.com,AI服务
+  - DOMAIN-SUFFIX,oaiusercontent.com,AI服务
+  - DOMAIN-SUFFIX,anthropic.com,AI服务
+  - DOMAIN-SUFFIX,claude.ai,AI服务
+  - DOMAIN-SUFFIX,perplexity.ai,AI服务
+
+  # Streaming
+  - GEOSITE,youtube,流媒体
+  - GEOSITE,netflix,流媒体
+  - GEOSITE,spotify,流媒体
+  - GEOSITE,twitch,流媒体
+  - GEOSITE,tiktok,流媒体
+  - GEOSITE,disney,流媒体
+
+  # Telegram / Social
+  - GEOSITE,telegram,社交媒体
+  - GEOSITE,twitter,社交媒体
+  - GEOSITE,discord,社交媒体
+
+  - DOMAIN-SUFFIX,t.me,社交媒体
+  - DOMAIN-SUFFIX,telegra.ph,社交媒体
+
+  - IP-CIDR,91.108.4.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.8.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.12.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.16.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.20.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.56.0/22,社交媒体,no-resolve
+  - IP-CIDR,149.154.160.0/20,社交媒体,no-resolve
+
+  # GitHub
+  - GEOSITE,github,节点选择
+
+  # Game
+  - GEOSITE,steam,游戏平台
+
+  # Google
+  - GEOSITE,google,Google服务
+
+  # Microsoft
+  - GEOSITE,microsoft,Microsoft服务
+
+  # Apple
+  - GEOSITE,apple,Apple服务
+
+  # GFW
+  - RULE-SET,U_GFW,节点选择
+
+  # China
+  - RULE-SET,U_CN_DOMAIN,DIRECT
+  - RULE-SET,U_CN_IP,DIRECT,no-resolve
+
+  # Final
+  - MATCH,节点选择

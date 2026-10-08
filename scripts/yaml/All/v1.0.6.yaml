@@ -1,0 +1,608 @@
+mode: rule
+
+# ============================================================
+# Mihomo 基础性能参数
+# ============================================================
+
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: always
+
+
+# ============================================================
+# Proxy Groups
+# Sub-Store 负责产生 proxies
+# 本配置负责根据节点名称进行动态地区分类
+# ============================================================
+
+proxy-groups:
+
+  # ==========================================================
+  # 总入口
+  # Sub-Store 中保持手动 select
+  # FlClash 开启二次覆写后自动变成 url-test
+  # ==========================================================
+
+  - name: 节点选择
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png"
+    default-selected: 香港节点
+    proxies:
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - 手动切换
+      - DIRECT
+
+
+  # ==========================================================
+  # 香港
+  # ==========================================================
+
+  - name: 香港节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png"
+    include-all-proxies: true
+    filter: "(?i)(香港|Hong\\s?Kong|\\bHK\\b|\\bHKG\\b|🇭🇰)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 台湾
+  # ==========================================================
+
+  - name: 台湾节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Taiwan.png"
+    include-all-proxies: true
+    filter: "(?i)(台湾|台北|新北|Taiwan|Taipei|New\\s?Taipei|\\bTW\\b|\\bTWN\\b|\\bTPE\\b|🇹🇼)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 日本
+  # ==========================================================
+
+  - name: 日本节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Japan.png"
+    include-all-proxies: true
+    filter: "(?i)(日本|Japan|东京|Tokyo|大阪|Osaka|\\bJP\\b|\\bJPN\\b|\\bNRT\\b|\\bHND\\b|\\bKIX\\b|🇯🇵)"
+    exclude-filter: "(?i)(尼日利亚|剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 新加坡
+  # ==========================================================
+
+  - name: 狮城节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Singapore.png"
+    include-all-proxies: true
+    filter: "(?i)(新加坡|狮城|Singapore|\\bSG\\b|\\bSGP\\b|\\bSIN\\b|🇸🇬)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 美国
+  # ==========================================================
+
+  - name: 美国节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_States.png"
+    include-all-proxies: true
+    filter: "(?i)(美国|United\\s?States|New\\s?York|纽约|Los\\s?Angeles|洛杉矶|San\\s?Jose|圣何塞|San\\s?Francisco|旧金山|Seattle|西雅图|Chicago|芝加哥|Dallas|达拉斯|Silicon\\s?Valley|硅谷|\\bUS\\b|\\bUSA\\b|\\bLAX\\b|\\bSFO\\b|\\bSJC\\b|\\bSEA\\b|🇺🇸)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 韩国
+  # ==========================================================
+
+  - name: 韩国节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Korea.png"
+    include-all-proxies: true
+    filter: "(?i)(韩国|南韩|首尔|Seoul|Korea|\\bKR\\b|\\bKOR\\b|\\bICN\\b|🇰🇷)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 英国
+  # ==========================================================
+
+  - name: 英国节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_Kingdom.png"
+    include-all-proxies: true
+    filter: "(?i)(英国|United\\s?Kingdom|Britain|Great\\s?Britain|London|伦敦|\\bUK\\b|\\bGB\\b|\\bGBR\\b|\\bLHR\\b|🇬🇧)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 澳大利亚
+  # ==========================================================
+
+  - name: 澳洲节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Australia.png"
+    include-all-proxies: true
+    filter: "(?i)(澳洲|澳大利亚|Australia|Sydney|悉尼|Melbourne|墨尔本|\\bAU\\b|\\bAUS\\b|\\bSYD\\b|\\bMEL\\b|🇦🇺)"
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 其他节点
+  #
+  # 注意：
+  # 泰国 / 德国 / 法国 不再作为独立组
+  #
+  # 因此这些国家现在也会进入这里：
+  # 泰国 / 德国 / 法国 / 加拿大 / 意大利 /
+  # 俄罗斯 / 越南 / 马来西亚 / 印度 / 巴西等
+  # ==========================================================
+
+  - name: 其他节点
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png"
+    include-all-proxies: true
+
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota|香港|Hong\\s?Kong|\\bHK\\b|\\bHKG\\b|🇭🇰|台湾|台北|Taiwan|Taipei|\\bTW\\b|\\bTWN\\b|\\bTPE\\b|🇹🇼|日本|Japan|Tokyo|Osaka|\\bJP\\b|\\bJPN\\b|🇯🇵|新加坡|狮城|Singapore|\\bSG\\b|\\bSGP\\b|🇸🇬|美国|United\\s?States|Los\\s?Angeles|\\bUS\\b|\\bUSA\\b|\\bLAX\\b|🇺🇸|韩国|Korea|Seoul|\\bKR\\b|\\bKOR\\b|🇰🇷|英国|United\\s?Kingdom|London|\\bUK\\b|\\bGBR\\b|🇬🇧|澳洲|澳大利亚|Australia|Sydney|Melbourne|\\bAU\\b|\\bAUS\\b|🇦🇺)"
+
+    empty-fallback: DIRECT
+
+
+  # ==========================================================
+  # 手动选择
+  #
+  # 唯一永远不参与 URLTest 的组
+  #
+  # 允许：
+  # 1x / 2x / 2.5x / 3x / 5x / 高倍率
+  # ==========================================================
+
+  - name: 手动切换
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png"
+    include-all-proxies: true
+    exclude-filter: "(?i)(剩余|流量|套餐|到期|重置|官网|Traffic|Expire|Expired|Reset|Quota)"
+
+
+  # ==========================================================
+  # AI
+  # ==========================================================
+
+  - name: AI服务
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 美国节点
+      - 日本节点
+      - 台湾节点
+      - 狮城节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # 流媒体
+  # ==========================================================
+
+  - name: 流媒体
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # 游戏
+  # ==========================================================
+
+  - name: 游戏平台
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # Google
+  # ==========================================================
+
+  - name: Google服务
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # 社交媒体
+  # ==========================================================
+
+  - name: 社交媒体
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 韩国节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # Microsoft
+  # ==========================================================
+
+  - name: Microsoft服务
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # Apple
+  # ==========================================================
+
+  - name: Apple服务
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 英国节点
+      - 其他节点
+      - DIRECT
+
+
+  # ==========================================================
+  # GLOBAL
+  # ==========================================================
+
+  - name: GLOBAL
+    type: select
+    icon: "https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png"
+    default-selected: 节点选择
+    proxies:
+      - 节点选择
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 狮城节点
+      - 美国节点
+      - 韩国节点
+      - 英国节点
+      - 澳洲节点
+      - 其他节点
+      - 手动切换
+      - DIRECT
+
+# ============================================================
+# Rule Providers
+# ============================================================
+
+rule-providers:
+
+  # 广告
+  U_ADBLOCK:
+    type: http
+    behavior: classical
+    format: text
+    interval: 86400
+    path: "./ruleset/U_ADBLOCK.list"
+    url: "https://fastly.jsdelivr.net/gh/fmz200/wool_scripts@main/Loon/rule/rejectAd.list"
+
+
+  # GFW
+  U_GFW:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_GFW.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.mrs"
+
+
+  # 中国域名
+  U_CN_DOMAIN:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_CN_DOMAIN.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs"
+
+
+  # 中国 IP
+  U_CN_IP:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_CN_IP.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs"
+
+
+  # AI
+  U_AI:
+    type: http
+    behavior: domain
+    format: mrs
+    interval: 86400
+    path: "./ruleset/U_AI.mrs"
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs"
+
+
+# ============================================================
+# Rules
+#
+# 优先级：
+#
+# LAN
+# ↓
+# 广告
+# ↓
+# 特殊代理例外
+# ↓
+# AI
+# ↓
+# 流媒体 / 社交 / 开发服务
+# ↓
+# GFW
+# ↓
+# 中国大陆
+# ↓
+# MATCH
+# ============================================================
+
+rules:
+
+  # ----------------------------------------------------------
+  # LAN / Local
+  # ----------------------------------------------------------
+
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,localhost,DIRECT
+
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+
+  # ----------------------------------------------------------
+  # Ads
+  # ----------------------------------------------------------
+
+  - RULE-SET,U_ADBLOCK,REJECT
+
+
+  # ----------------------------------------------------------
+  # Google 中国域名特殊代理
+  #
+  # 必须位于 CN DIRECT 规则之前
+  # ----------------------------------------------------------
+
+  - DOMAIN-SUFFIX,googleapis.cn,Google服务
+  - DOMAIN-SUFFIX,services.googleapis.cn,Google服务
+  - DOMAIN-SUFFIX,gstatic.cn,Google服务
+
+  # 参考 Flclash-scripts scripts15
+  # 解决 Google Play 下载相关域名
+  - DOMAIN-KEYWORD,googleusercontent,Google服务
+  - DOMAIN-KEYWORD,xn--ngstr-lra8j,Google服务
+
+
+  # ----------------------------------------------------------
+  # AI
+  # ----------------------------------------------------------
+
+  - RULE-SET,U_AI,AI服务
+
+  # 手工兜底
+  - DOMAIN-SUFFIX,openai.com,AI服务
+  - DOMAIN-SUFFIX,chatgpt.com,AI服务
+  - DOMAIN-SUFFIX,oaistatic.com,AI服务
+  - DOMAIN-SUFFIX,oaiusercontent.com,AI服务
+
+  - DOMAIN-SUFFIX,anthropic.com,AI服务
+  - DOMAIN-SUFFIX,claude.ai,AI服务
+
+  - DOMAIN-SUFFIX,perplexity.ai,AI服务
+
+
+  # ----------------------------------------------------------
+  # Streaming
+  # ----------------------------------------------------------
+
+  - GEOSITE,youtube,流媒体
+  - GEOSITE,netflix,流媒体
+  - GEOSITE,spotify,流媒体
+  - GEOSITE,twitch,流媒体
+  - GEOSITE,tiktok,流媒体
+  - GEOSITE,disney,流媒体
+
+
+  # ----------------------------------------------------------
+  # Telegram
+  # ----------------------------------------------------------
+
+  - GEOSITE,telegram,社交媒体
+
+  - DOMAIN-SUFFIX,t.me,社交媒体
+  - DOMAIN-SUFFIX,telegra.ph,社交媒体
+
+  - IP-CIDR,91.108.4.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.8.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.12.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.16.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.20.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.108.56.0/22,社交媒体,no-resolve
+  - IP-CIDR,91.105.192.0/23,社交媒体,no-resolve
+  - IP-CIDR,149.154.160.0/20,社交媒体,no-resolve
+  - IP-CIDR,185.76.151.0/24,社交媒体,no-resolve
+
+  - IP-CIDR6,2001:b28:f23d::/48,社交媒体,no-resolve
+  - IP-CIDR6,2001:b28:f23f::/48,社交媒体,no-resolve
+  - IP-CIDR6,2001:67c:4e8::/48,社交媒体,no-resolve
+  - IP-CIDR6,2a0a:f280::/32,社交媒体,no-resolve
+
+
+  # ----------------------------------------------------------
+  # Social
+  # ----------------------------------------------------------
+
+  - GEOSITE,twitter,社交媒体
+  - GEOSITE,discord,社交媒体
+
+
+  # ----------------------------------------------------------
+  # GitHub
+  # ----------------------------------------------------------
+
+  - GEOSITE,github,节点选择
+  - DOMAIN-SUFFIX,github.com,节点选择
+
+  # ----------------------------------------------------------
+  # Docker
+  # ----------------------------------------------------------
+
+  - DOMAIN,auth.docker.io,节点选择
+  - DOMAIN,registry-1.docker.io,节点选择
+  - DOMAIN,production.cloudfront.docker.com,节点选择
+  - DOMAIN-SUFFIX,docker.io,节点选择
+  - DOMAIN-SUFFIX,docker.com,节点选择
+  - DOMAIN-SUFFIX,ghcr.io,节点选择
+  - DOMAIN-SUFFIX,lscr.io,节点选择
+  - DOMAIN-SUFFIX,pkg-containers.githubusercontent.com,节点选择
+  - DOMAIN-SUFFIX,githubusercontent.com,节点选择
+
+  # ----------------------------------------------------------
+  # Games
+  # ----------------------------------------------------------
+
+  - GEOSITE,steam,游戏平台
+
+
+  # ----------------------------------------------------------
+  # Google
+  #
+  # YouTube 必须在 Google 前面
+  # ----------------------------------------------------------
+
+  - GEOSITE,google,Google服务
+
+
+  # ----------------------------------------------------------
+  # Microsoft
+  # ----------------------------------------------------------
+
+  - GEOSITE,microsoft,Microsoft服务
+
+
+  # ----------------------------------------------------------
+  # Apple
+  # ----------------------------------------------------------
+
+  - GEOSITE,apple,Apple服务
+
+
+  # ----------------------------------------------------------
+  # GFW
+  # ----------------------------------------------------------
+
+  - RULE-SET,U_GFW,节点选择
+
+
+  # ----------------------------------------------------------
+  # China
+  # ----------------------------------------------------------
+
+  - RULE-SET,U_CN_DOMAIN,DIRECT
+  - RULE-SET,U_CN_IP,DIRECT,no-resolve
+
+
+  # ----------------------------------------------------------
+  # Final
+  # ----------------------------------------------------------
+
+  - MATCH,节点选择

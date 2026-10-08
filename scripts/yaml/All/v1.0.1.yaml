@@ -1,0 +1,25 @@
+mode: rule
+
+proxy-groups:
+  - name: U-MANUAL
+    type: select
+    include-all: true
+
+  - name: U-AUTO
+    type: url-test
+    include-all: true
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-PROXY
+    type: select
+    proxies:
+      - U-AUTO
+      - U-MANUAL
+      - DIRECT
+
+rules:
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - MATCH,U-PROXY

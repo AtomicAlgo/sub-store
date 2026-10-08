@@ -1,0 +1,126 @@
+mode: rule
+
+proxy-groups:
+
+  - name: U-AUTO
+    type: url-test
+    include-all: true
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-MANUAL
+    type: select
+    include-all: true
+
+  - name: U-HK
+    type: url-test
+    include-all: true
+    filter: "(?i)香港|Hong Kong|HongKong|🇭🇰|\\bHK\\b"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-TW
+    type: url-test
+    include-all: true
+    filter: "(?i)台湾|Taiwan|Taipei|🇹🇼|\\bTW\\b"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-JP
+    type: url-test
+    include-all: true
+    filter: "(?i)日本|Japan|Tokyo|Osaka|🇯🇵|\\bJP\\b"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-SG
+    type: url-test
+    include-all: true
+    filter: "(?i)新加坡|狮城|Singapore|🇸🇬|\\bSG\\b"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-US
+    type: url-test
+    include-all: true
+    filter: "(?i)美国|United States|Los Angeles|San Jose|Seattle|🇺🇸|\\bUS\\b"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 80
+
+  - name: U-PROXY
+    type: select
+    proxies:
+      - U-AUTO
+      - U-HK
+      - U-TW
+      - U-JP
+      - U-SG
+      - U-US
+      - U-MANUAL
+      - DIRECT
+
+rules:
+
+  # LAN
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,localhost,DIRECT
+
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+
+  # CN 域名中的特殊代理例外
+  - DOMAIN-SUFFIX,googleapis.cn,U-PROXY
+  - DOMAIN-SUFFIX,services.googleapis.cn,U-PROXY
+  - DOMAIN-SUFFIX,gstatic.cn,U-PROXY
+
+  # AI
+  - DOMAIN-SUFFIX,openai.com,U-AI
+  - DOMAIN-SUFFIX,chatgpt.com,U-AI
+  - DOMAIN-SUFFIX,oaistatic.com,U-AI
+  - DOMAIN-SUFFIX,oaiusercontent.com,U-AI
+  - DOMAIN-SUFFIX,anthropic.com,U-AI
+  - DOMAIN-SUFFIX,claude.ai,U-AI
+
+  # GitHub
+  - DOMAIN-SUFFIX,github.com,U-PROXY
+  - DOMAIN-SUFFIX,githubusercontent.com,U-PROXY
+  - DOMAIN-SUFFIX,githubassets.com,U-PROXY
+
+  # Google
+  - DOMAIN-SUFFIX,google.com,U-PROXY
+  - DOMAIN-SUFFIX,gstatic.com,U-PROXY
+  - DOMAIN-SUFFIX,googleapis.com,U-PROXY
+
+  # YouTube
+  - DOMAIN-SUFFIX,youtube.com,U-STREAM
+  - DOMAIN-SUFFIX,youtu.be,U-STREAM
+  - DOMAIN-SUFFIX,ytimg.com,U-STREAM
+  - DOMAIN-SUFFIX,googlevideo.com,U-STREAM
+
+  # Telegram
+  - DOMAIN-SUFFIX,t.me,U-PROXY
+  - DOMAIN-SUFFIX,telegram.org,U-PROXY
+  - DOMAIN-SUFFIX,telegram.me,U-PROXY
+  - DOMAIN-SUFFIX,telegra.ph,U-PROXY
+
+  - IP-CIDR,91.108.4.0/22,U-PROXY,no-resolve
+  - IP-CIDR,91.108.8.0/21,U-PROXY,no-resolve
+  - IP-CIDR,91.108.16.0/22,U-PROXY,no-resolve
+  - IP-CIDR,149.154.160.0/20,U-PROXY,no-resolve
+
+  # 中国
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT
+
+  # 默认
+  - MATCH,U-PROXY

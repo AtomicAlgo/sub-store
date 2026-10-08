@@ -1,0 +1,31 @@
+# 订阅产物包含节点密码、UUID 和订阅 token，禁止进入版本库。
+/subscribe/
+
+# 编辑器历史与本地临时文件
+/.history/
+*.tmp
+*.temp
+*.bak
+*.log
+
+# 环境变量与常见凭据文件
+.env
+.env.*
+!.env.example
+credentials.json
+credentials.yaml
+credentials.yml
+secrets.json
+secrets.yaml
+secrets.yml
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+
+# 操作系统与编辑器元数据
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
