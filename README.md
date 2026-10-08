@@ -12,6 +12,7 @@
 | `scripts/yaml/All/` | 完整分流模板的历史版本 | 是 |
 | `scripts/yaml/Free/` | Free 场景模板 | 是 |
 | `scripts/yaml/Mine/` | Mine 场景模板 | 是 |
+| `scripts/yaml/Config/` | 可切换的 DNS/TUN 配置层，不包含代理组和规则 | 是 |
 | `scripts/js/` | Sub-Store 后处理脚本 | 是 |
 | `tests/` | 本地兼容性测试 | 是 |
 | `subscribe/` | 原始订阅和最终生成配置，含密码、UUID、token | 否，仅本地保存 |
@@ -30,18 +31,50 @@
 | `v1.0.3` | 切换为中文分组体系；加入更多地区、AI、流媒体、游戏、Google、社交、Microsoft、Apple 等服务组，引入远程规则集和完整规则优先级。 |
 | `v1.0.4` | 调整地区顺序和匹配策略，新增“其他节点”，强化手动切换及服务分组结构。 |
 | `v1.0.5` | 精简独立地区组，将低频地区归入“其他节点”，保留 19 个核心分组并简化配置。 |
-| `v1.0.6` | 在 `v1.0.5` 基础上增加 GitHub 及 Docker Hub、GHCR、LSCR 等容器镜像域名规则。当前推荐版本。 |
+| `v1.0.6` | 在 `v1.0.5` 基础上增加 GitHub 及 Docker Hub、GHCR、LSCR 等容器镜像域名规则。当前推荐的 All 代理组与规则层。 |
 
-`v1.0.3` 至 `v1.0.6` 已移除 Mihomo 不再支持的顶层 `global-client-fingerprint`。
+`All/v1.0.3` 至 `All/v1.0.6` 均已移除 Mihomo 不再支持的顶层 `global-client-fingerprint`。
+
+### Config
+
+| 版本 | 功能说明 |
+| --- | --- |
+| `Config/v1.0.0` | `redir-host` 日常推荐配置层，只包含加密 DNS 与 TUN；所有域名返回真实 IP。 |
+| `Config/v1.1.0` | 有限 Fake-IP 兼容备份层，只对 `geosite:gfw` 返回 Fake-IP，其余域名返回真实 IP。 |
+
+两个 Config 版本都要求 FlClash 保持 TUN 开启，并关闭会替换订阅 `dns:` 内容的 DNS 覆写。`strict-route` 可能影响部分虚拟机或局域网软件；遇到异常时应先临时关闭该字段定位。
 
 ### Free 与 Mine
 
 | 版本 | 功能说明 |
 | --- | --- |
 | `Free/v1.0.1` | 19 个核心分组的精简规则模板，适合不区分订阅来源的组合配置。 |
-| `Mine/v1.0.1` | 当前与 `Free/v1.0.1` 功能等价，仅保留了来源备注；后续个人专用策略应从该目录继续递增版本。 |
+| `Mine/v1.0.1` | 与 `Free/v1.0.1` 功能等价的个人配置基线。 |
 
-以上两个模板也已移除废弃的顶层客户端指纹字段。
+All、Free、Mine 只负责代理组和规则，使用时三选一；DNS/TUN 由 Config 单独叠加。所有正式模板均已移除废弃的顶层客户端指纹字段。
+
+## Sub-Store 叠加方式
+
+组合订阅 `all` 只负责生成、过滤和重命名节点，不要把 YAML 内容添加到组合订阅的节点操作中。
+
+在“文件 -> Mihomo 配置”中创建文件，来源选择组合订阅 `all`，然后添加两个 YAML 操作：
+
+1. 选择一个代理规则层：`All/v1.0.6`、`Free/v1.0.1` 或 `Mine/v1.0.1`。
+2. 选择一个 DNS/TUN 层：日常使用 `Config/v1.0.0`，兼容回退使用 `Config/v1.1.0`。
+
+推荐组合：
+
+```text
+all-redir-host
+  代理规则层：All/v1.0.6
+  DNS/TUN 层：Config/v1.0.0
+
+all-fake-ip
+  代理规则层：All/v1.0.6
+  DNS/TUN 层：Config/v1.1.0
+```
+
+切换 DNS 模式时只需禁用当前 Config 操作并启用另一个 Config 操作，不需要复制或修改代理组规则。两个配置层的顶层键互不冲突，最终文件应只出现一个 `dns:`、一个 `tun:` 和一个 `proxy-groups:`。
 
 ## JavaScript 版本说明
 
@@ -51,6 +84,7 @@
 | `URLTest2.js` | 激进自动模式：除“手动切换”外将现有组转换为 URLTest，并移除自动候选中的 `DIRECT` 和手动组。 |
 | `URLTest3.js` | 保守自动模式：只把指定地区组转换为 URLTest，其他服务组继续保持手动选择；切换容差为 150 ms。 |
 | `ClientFingerprint.js` | FlClash/Mihomo 兼容处理：删除旧的全局指纹字段，并给适用的 TLS 代理补充逐代理 `client-fingerprint: chrome`。 |
+| `js/Free/v1.0.1.js` | Free 系列节点清理：保留允许省略速率的 Hysteria2；回填 Hysteria v1 速率，并过滤速率缺失或服务器地址损坏的节点。 |
 
 ## FlClash 指纹报错处理
 
@@ -75,7 +109,10 @@ proxies:
 
 ```powershell
 node --check scripts/js/ClientFingerprint.js
+node --check scripts/js/Free/v1.0.1.js
 node tests/client-fingerprint.test.js
+node tests/dns-variants.test.js
+node tests/free-hysteria-filter.test.js
 rg "^global-client-fingerprint:" scripts/yaml
 git ls-files subscribe
 ```

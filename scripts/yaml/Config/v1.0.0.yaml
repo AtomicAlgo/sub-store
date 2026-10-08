@@ -1,0 +1,37 @@
+# redir-host 配置层：只负责 DNS 与 TUN，不包含代理组和路由规则。
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: redir-host
+  use-hosts: true
+  use-system-hosts: false
+  respect-rules: true
+
+  # 仅用于解析 DoH 服务器域名，必须使用纯 IP DNS。
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  # 普通域名通过加密 DNS 解析，并按最终合并后的路由规则选择出口。
+  nameserver:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+
+  # 代理节点域名必须能够在代理连接建立前完成解析。
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+  # DIRECT 规则使用国内 DoH，避免直连域名绕回代理解析链。
+  direct-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: true

@@ -7,6 +7,10 @@
 ## 已完成任务文档
 
 `workflow/done/261008-secure-initial-repository.md` - 清除旧提交历史、保护订阅数据并修复 FlClash 指纹配置兼容问题。
+`workflow/done/261008-add-dns-mode-variants.md` - 已被 Config 分层方案取代的完整 DNS 版本历史记录。
+`workflow/done/261008-sync-free-mine-dns-variants.md` - 已被 Config 分层方案取代的 Free/Mine 重复同步历史记录。
+`workflow/done/261008-split-dns-and-proxy-layers.md` - 当前采用的 DNS/TUN 与代理组规则分层方案。
+`workflow/done/261008-add-free-hysteria-filter.md` - Free 系列损坏 Hysteria 节点过滤脚本及验证。
 
 ## 全局重要记忆
 

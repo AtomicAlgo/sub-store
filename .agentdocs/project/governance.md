@@ -3,7 +3,7 @@
 ## 内容边界
 
 - `scripts/yaml/`：可提交的 Mihomo 配置模板，按用途和版本保存。
-- `scripts/js/`：可提交的 Sub-Store 后处理脚本，必须保持单一职责。
+- `scripts/js/`：可提交的 Sub-Store 后处理脚本；通用脚本直接存放，系列专用脚本放入对应系列子目录，且必须保持单一职责。
 - `tests/`：不引入额外测试框架的本地验证脚本。
 - `subscribe/`：本地订阅输入与生成结果，包含密码、UUID、token 等敏感信息，禁止提交。
 
@@ -21,6 +21,6 @@
 
 ## 验证要求
 
-- JavaScript 变更执行 `node --check <文件>` 和 `node tests/client-fingerprint.test.js`。
+- JavaScript 变更执行 `node --check <文件>` 及对应的 `node tests/<功能>.test.js`。
 - YAML 变更至少验证模板顶层不存在 `global-client-fingerprint`，并检查缩进和关键顶层结构。
 - 新增或变更功能必须同步补充单元与集成场景；当前项目使用 Node 内置 `assert`，不引入测试框架。

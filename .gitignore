@@ -3,6 +3,9 @@
 
 # 编辑器历史与本地临时文件
 /.history/
+/scripts/yaml/All/temp.yaml
+/*.exe
+/fakeip配置.png
 *.tmp
 *.temp
 *.bak

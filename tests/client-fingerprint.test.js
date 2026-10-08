@@ -37,7 +37,9 @@ for (const category of fs.readdirSync(yamlRoot)) {
   const categoryPath = path.join(yamlRoot, category);
   if (!fs.statSync(categoryPath).isDirectory()) continue;
   for (const file of fs.readdirSync(categoryPath)) {
-    if (file.endsWith(".yaml")) yamlFiles.push(path.join(categoryPath, file));
+    if (/^v\d+(?:\.\d+)+\.yaml$/.test(file)) {
+      yamlFiles.push(path.join(categoryPath, file));
+    }
   }
 }
 
