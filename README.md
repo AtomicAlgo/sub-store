@@ -84,7 +84,8 @@ all-fake-ip
 | `URLTest2.js` | 激进自动模式：除“手动切换”外将现有组转换为 URLTest，并移除自动候选中的 `DIRECT` 和手动组。 |
 | `URLTest3.js` | 保守自动模式：只把指定地区组转换为 URLTest，其他服务组继续保持手动选择；切换容差为 150 ms。 |
 | `ClientFingerprint.js` | FlClash/Mihomo 兼容处理：删除旧的全局指纹字段，并给适用的 TLS 代理补充逐代理 `client-fingerprint: chrome`。 |
-| `js/Free/v1.0.1.js` | Free 系列节点清理：保留允许省略速率的 Hysteria2；回填 Hysteria v1 速率，并过滤速率缺失或服务器地址损坏的节点。 |
+| `js/Free/v1.0.1.js` | Free 系列第一版 Hysteria 节点清理脚本，作为历史版本保留。 |
+| `js/Free/v1.0.2.js` | 当前推荐版本：在第一版过滤逻辑上增加空配置和畸形代理项保护，保留 Hysteria2，并修复或过滤 Hysteria v1。 |
 
 ## FlClash 指纹报错处理
 
@@ -110,6 +111,7 @@ proxies:
 ```powershell
 node --check scripts/js/ClientFingerprint.js
 node --check scripts/js/Free/v1.0.1.js
+node --check scripts/js/Free/v1.0.2.js
 node tests/client-fingerprint.test.js
 node tests/dns-variants.test.js
 node tests/free-hysteria-filter.test.js

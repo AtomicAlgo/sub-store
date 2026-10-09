@@ -6,7 +6,7 @@ Free 聚合节点中存在损坏的 Hysteria v1：缺少必要上传/下载速�
 
 ## 实施阶段
 
-- [x] 新增 `scripts/js/Free/v1.0.1.js`。
+- [x] 保留 `scripts/js/Free/v1.0.1.js` 第一版，并新增带输入保护的 `v1.0.2.js` 推荐版本。
 - [x] 清理 Hysteria2 空速率字段并保留节点。
 - [x] 为 Hysteria v1 从 `up-speed/down-speed` 回填 `up/down`。
 - [x] 过滤缺少必要速率或服务器地址损坏的 Hysteria v1 节点。

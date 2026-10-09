@@ -4,7 +4,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
-const scriptPath = path.join(root, "scripts", "js", "Free", "v1.0.1.js");
+const scriptPath = path.join(root, "scripts", "js", "Free", "v1.0.2.js");
 const source = fs.readFileSync(scriptPath, "utf8");
 const context = vm.createContext({});
 vm.runInContext(source, context, { filename: scriptPath });
