@@ -1,0 +1,37 @@
+baseURL = 'https://studywiki.586037.xyz/'
+languageCode = 'zh-cn'
+defaultContentLanguage = 'zh'
+title = 'StudyWiki · 学习笔记'
+theme = 'PaperMod'
+enableRobotsTXT = true
+[pagination]
+pagerSize = 8
+[params]
+env = 'production'
+description = '记录阅读、写作与知识整理的方法。'
+defaultTheme = 'auto'
+ShowReadingTime = true
+ShowBreadCrumbs = true
+ShowPostNavLinks = true
+ShowCodeCopyButtons = true
+[params.assets]
+favicon = '/favicon.svg'
+favicon16x16 = '/favicon.svg'
+favicon32x32 = '/favicon.svg'
+apple_touch_icon = '/favicon.svg'
+safari_pinned_tab = '/favicon.svg'
+[params.homeInfoParams]
+Title = '把学到的东西，写成自己的笔记'
+Content = '这里记录阅读方法、知识整理与日常学习实践。少一点收藏，多一点理解。'
+[[menu.main]]
+name = '文章'
+url = '/posts/'
+weight = 10
+[[menu.main]]
+name = '标签'
+url = '/tags/'
+weight = 20
+[[menu.main]]
+name = '关于'
+url = '/about/'
+weight = 30
