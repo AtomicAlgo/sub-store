@@ -20,6 +20,22 @@
 
 新增功能优先使用描述功能的稳定脚本名，通过 Git commit/tag 和下方版本说明追踪历史；已归档的旧版模板保留。订阅文件统一放入 `subscribe/`；即使仓库设置为私有，也不得强制加入 Git。
 
+## Windows TUN 与 DNS 分流配置
+
+新增 `Config/v1.2.0.yaml`，与 `All/v1.0.10` 配套。国内域名复用 `U_CN_DOMAIN` 规则集，使用国内直连 DoH；其他域名默认通过“节点选择”访问国外 DoH；`U_AI`、`U_GFW` 和 Google 中国域名例外优先走代理 DNS。节点引导使用独立国内 DoH。采用 redir-host、1500 MTU、UDP/TCP DNS 接管和 Windows 严格路由。
+
+Sub-Store 文件操作按以下顺序启用：
+
+1. `scripts/yaml/All/v1.0.10.yaml`，保留代理组与分流规则。
+2. `scripts/yaml/Config/v1.2.0.yaml`，统一 DNS/TUN。
+3. `scripts/js/All/add_chained_proxy.js`，最后补充链式代理。
+
+禁用旧 `Config/v1.0.0` 和 `Config/v1.1.0` 操作。不要同时启用多个 Config 层。更新后的“节点选择”须指向有效代理链路；该组或其地区子组选择 DIRECT、空组回落 DIRECT 时，国外 DoH 也会直连。
+
+FlClash 清理当前 DNS 覆写字段列表，保留“追加系统 DNS”关闭；清理当前 `strict-route=false` 的 TUN 覆写，确保最终生成值与新 Config 相同。界面保留本地控制端口与 TUN 开关管理，订阅内 DNS/TUN 参数以新配置层为准。以最终生成文件和核心运行态复核，界面字段名称可能随版本变化。
+
+本机此前严格路由与网络接口切换出现过故障，配置解析通过仅证明静态有效。正式验收还需检查 TUN 启停、换网、DNS 物理出口及长时间 CPU/端口占用。应用自带 DoH、局域网私有域名、Tailscale 和 WSL 独立解析器需要单独核查。该配置不包含路由器或 Windows ICS 的系统设置修改。
+
 ## YAML 版本说明
 
 ### All
@@ -44,9 +60,10 @@
 | 版本 | 功能说明 |
 | --- | --- |
 | `Config/v1.0.0` | `redir-host` 日常推荐配置层，只包含加密 DNS 与 TUN；所有域名返回真实 IP。 |
+| `Config/v1.2.0` | Windows TUN 与显式 DNS 分流配置层，配套 All/v1.0.10；加载顺序和验收边界见上节。 |
 | `Config/v1.1.0` | 有限 Fake-IP 兼容备份层，只对 `geosite:gfw` 返回 Fake-IP，其余域名返回真实 IP。 |
 
-两个 Config 版本都要求 FlClash 保持 TUN 开启，并关闭会替换订阅 `dns:` 内容的 DNS 覆写。`strict-route` 可能影响部分虚拟机或局域网软件；遇到异常时应先临时关闭该字段定位。
+旧 Config/v1.0.0 与 Config/v1.1.0 都要求 FlClash 保持 TUN 开启，并关闭会替换订阅 `dns:` 内容的 DNS 覆写。`strict-route` 可能影响部分虚拟机或局域网软件；遇到异常时应先临时关闭该字段定位。
 
 ### Free 与 Mine
 

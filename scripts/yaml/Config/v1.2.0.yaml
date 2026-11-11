@@ -1,0 +1,56 @@
+# 与 All/v1.0.10 配套，替代旧 redir-host / Fake-IP 配置层，二者均应禁用。
+# 节点选择必须选用实际代理链路；选择 DIRECT 会使国外 DNS 直接出站。
+# Windows 严格路由曾在部分环境触发兼容问题，加载后需验收，不能据配置宣称稳定。
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  ipv6: false
+  enhanced-mode: redir-host
+  use-hosts: true
+  use-system-hosts: false
+  respect-rules: false
+  cache-algorithm: lru
+  cache-max-size: 4096
+  prefer-h3: false
+
+  # 引导及代理节点解析独立直连，避免依赖尚未建立的代理。
+  default-nameserver:
+    - "https://223.6.6.6/dns-query"
+    - "https://223.5.5.5/dns-query"
+  proxy-server-nameserver:
+    - "https://223.6.6.6/dns-query#DIRECT"
+    - "https://223.5.5.5/dns-query#DIRECT"
+  proxy-server-nameserver-policy: {}
+
+  # 默认解析走代理；国内规则显式使用国内直连 DoH。
+  nameserver:
+    - "https://1.1.1.1/dns-query#节点选择"
+    - "https://8.8.8.8/dns-query#节点选择"
+  nameserver-policy:
+    # 对应 All 层中位于国内规则之前的代理例外。
+    "+.googleapis.cn,+.gstatic.cn":
+      - "https://1.1.1.1/dns-query#节点选择"
+      - "https://8.8.8.8/dns-query#节点选择"
+    "rule-set:U_AI,U_GFW":
+      - "https://1.1.1.1/dns-query#节点选择"
+      - "https://8.8.8.8/dns-query#节点选择"
+    "rule-set:U_CN_DOMAIN":
+      - "https://223.6.6.6/dns-query#DIRECT"
+      - "https://223.5.5.5/dns-query#DIRECT"
+  direct-nameserver:
+    - "https://223.6.6.6/dns-query#DIRECT"
+    - "https://223.5.5.5/dns-query#DIRECT"
+  direct-nameserver-follow-policy: true
+  fallback: []
+
+tun:
+  enable: true
+  stack: mixed
+  mtu: 1500
+  auto-route: true
+  auto-detect-interface: true
+  dns-mode: hijack
+  dns-hijack:
+    - "udp://any:53"
+    - "tcp://any:53"
+  strict-route: true

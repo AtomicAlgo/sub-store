@@ -6,6 +6,8 @@
 
 ## 已完成任务文档
 
+`workflow/done/261111-unified-tun-dns.md` - 统一 Windows TUN 与国内外 DNS 分流配置，记录覆盖清理及实机待验收边界。
+
 `workflow/done/261008-secure-initial-repository.md` - 清除旧提交历史、保护订阅数据并修复 FlClash 指纹配置兼容问题。
 `workflow/done/261008-add-dns-mode-variants.md` - 已被 Config 分层方案取代的完整 DNS 版本历史记录。
 `workflow/done/261008-sync-free-mine-dns-variants.md` - 已被 Config 分层方案取代的 Free/Mine 重复同步历史记录。
